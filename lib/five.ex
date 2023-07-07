@@ -1,21 +1,16 @@
 defmodule Five do
-  def solve() do
-    [head | _] =
-      Stream.unfold(1, &unfold/1)
-      |> Enum.reverse()
+  defp gcd(0, b), do: b
+  defp gcd(a, b), do: gcd(rem(b, a), a)
 
-    head + 1
+  defp smallestDiv(n) do
+    1..n
+    |> Enum.reduce(1, fn element, accumulator ->
+      divisor = gcd(element, accumulator)
+      div(element * accumulator, divisor)
+    end)
   end
 
-  def unfold(n) do
-    case is_evenly_divided?(n) do
-      true -> nil
-      _ -> {n, n + 1}
-    end
+  def solve do
+    smallestDiv(20)
   end
-
-  def is_evenly_divided?(n) do
-    1..20 |> Enum.all?(fn number -> rem(n, number) === 0 end)
-  end
-
 end
